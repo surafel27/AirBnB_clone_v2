@@ -9,7 +9,7 @@ fi
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
 fake_html="<html>
-             <head></heade>
+             <head></head>
 	     <body>
 	        <h1> Test My Nginx configuration</h1>
 	    </body>
