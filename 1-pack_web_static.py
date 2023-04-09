@@ -16,5 +16,4 @@ def do_pack():
     archive_file = local(archive_file_tar)
     if archive_file.failed:
         return None
-    else:
-        return archive_file
+    return  archive_name
