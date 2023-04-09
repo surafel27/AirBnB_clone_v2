@@ -6,9 +6,14 @@ then
     sudo apt-get update -y
     sudo apt-get install nginx -y
 fi
-sudo mkdir -p /data/web_static/releases/test
+sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
-$fake_html="<html><heade></heade><body><h1> Test My Nginx configuration</h1></body></html>"
+fake_html="<html>
+             <head></heade>
+	     <body>
+	        <h1> Test My Nginx configuration</h1>
+	    </body>
+	  </html>"
 echo "$fake_html" >> /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
