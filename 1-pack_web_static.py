@@ -11,7 +11,7 @@ def do_pack():
     c_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     archive_name = "versions/web_static_{}.tgz".format(c_time)
     if not os.path.exists('versions'):
-        os.makedirs("versions/")
+       local("mkdir -p versions")
     print("Packing web_static to {}".format(archive_name))
     archive_file_tar = "tar -czvf {} web_static".format(archive_name)
     archive_file = local(archive_file_tar)
