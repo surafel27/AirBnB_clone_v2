@@ -25,6 +25,8 @@ def do_deploy(archive_path):
     """lets deploye the one we have just archived"""
     env.user = 'ubuntu'
     env.hosts = ['ubuntu@54.210.88.105', '100.26.233.248']
+    env.key_filename = "/root/.ssh/id_rsa"
+    env.use_ssh_config = True
     if not os.path.exists(archive_path):
         return False
     try:
@@ -32,16 +34,20 @@ def do_deploy(archive_path):
             os.makedirs('/tmp')
         put(archive_paht, '/tmp/')
         archive_split = archive_path.split('.')
-        archive_split = archive_split.split('/')
-        unzip_tar = "tar -xzvf /tmp/{}.tgz".format(archive_split[1])
+        filename = archive_split.split('/')
+        unzip_tar = "tar -xzvf /tmp/{}.tgz".format(filename[1])
         run(unzip_tar)
-        rm_zipfile = "rm -rf /tmp/{}.tgz".format(archive_split[1])
+        rm_zipfile = "rm -rf /tmp/{}.tgz".format(filename[1])
         run(rm_zipfile)
-        mv_file = "mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}".format(archive_split[1], archived_split[1])
+        mv_file = "mv /data/web_static/releases/{}/web_static/* \
+                   /data/web_static/releases/{}".format(
+                           filename[1], filename[1])
         run(mv_file)
-        run("rm -rf /data/web_static/releases/{}/web_static".format(archive_split[1]))
+        run("rm -rf /data/web_static/releases/{}/web_static".format(
+             filename[1]))
         run("rm -rf /data/web_static/current")
-        new_link = "ln -sf /data/web_static/releases/{} /data/web_static/current".format(archive_split[1])
+        new_link = "ln -sf /data/web_static/releases/{} \
+                    /data/web_static/current".format(filename[1])
         run(new_link)
         return True
     except:
