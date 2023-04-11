@@ -7,6 +7,11 @@ import datetime
 from fabric.network import ssh_config
 from fabric.api import local, run, env, put
 
+env.user = 'ubuntu'
+env.hosts = ['54.210.88.105', '100.26.233.248']
+env.key_filename = "/root/.ssh/school"
+env.use_ssh_config = True
+
 
 def do_pack():
     """function makest tar file"""
@@ -24,19 +29,15 @@ def do_pack():
 
 def do_deploy(archive_path):
     """lets deploye the one we have just archived"""
-    env.user = 'ubuntu'
-    env.hosts = ['54.210.88.105', '100.26.233.248']
-    env.key_filename = "/root/.ssh/id_rsa"
-    env.use_ssh_config = True
     if os.path.exists(archive_path) is False:
         return False
     try:
-        put(archive_paht, '/tmp/')
+        put(archive_path, '/tmp/')
         zip_name = archive_path.split('/')[-1]
         archive_split = archive_path.split('.')
         filename = archive_split[0].split('/')
-        run("mkdir -p /data/web_static/releases/{}".format(filename))
-        unzip_tar = "tar -xzvf /tmp/{} -C /data/web_static/releases/{}".format(
+        run("mkdir -p /data/web_static/releases/{}".format(filename[1]))
+        unzip_tar = "tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
                      zip_name, filename[1])
         run(unzip_tar)
         rm_zipfile = "rm -rf /tmp/{}".format(zip_name)
