@@ -4,7 +4,8 @@ archive from the contents of the web_static """
 
 import os
 import datetime
-from fabric.api import local, run, env
+from fabric.network import ssh_config
+from fabric.api import local, run, env, put
 
 
 def do_pack():
@@ -24,20 +25,21 @@ def do_pack():
 def do_deploy(archive_path):
     """lets deploye the one we have just archived"""
     env.user = 'ubuntu'
-    env.hosts = ['ubuntu@54.210.88.105', '100.26.233.248']
+    env.hosts = ['54.210.88.105', '100.26.233.248']
     env.key_filename = "/root/.ssh/id_rsa"
     env.use_ssh_config = True
-    if not os.path.exists(archive_path):
+    if os.path.exists(archive_path) is False:
         return False
     try:
-        if not os.path.exists('/tmp/'):
-            os.makedirs('/tmp')
         put(archive_paht, '/tmp/')
+        zip_name = archive_path.split('/')[-1]
         archive_split = archive_path.split('.')
-        filename = archive_split.split('/')
-        unzip_tar = "tar -xzvf /tmp/{}.tgz".format(filename[1])
+        filename = archive_split[0].split('/')
+        run("mkdir -p /data/web_static/releases/{}".format(filename))
+        unzip_tar = "tar -xzvf /tmp/{} -C /data/web_static/releases/{}".format(
+                     zip_name, filename[1])
         run(unzip_tar)
-        rm_zipfile = "rm -rf /tmp/{}.tgz".format(filename[1])
+        rm_zipfile = "rm -rf /tmp/{}".format(zip_name)
         run(rm_zipfile)
         mv_file = "mv /data/web_static/releases/{}/web_static/* \
                    /data/web_static/releases/{}".format(
