@@ -57,6 +57,7 @@ def do_deploy(archive_path):
     except:
         return False
 
+
 def deploy():
     """function used to full deployment an archive
     first do_pack() then deploye it the using do_deploy()"""
