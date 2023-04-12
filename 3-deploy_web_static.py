@@ -4,6 +4,7 @@ archive from the contents of the web_static """
 
 import os
 import datetime
+from fabric.api import *
 from fabric.network import ssh_config
 from fabric.api import local, run, env, put
 
@@ -58,8 +59,8 @@ def do_deploy(archive_path):
 
     def deploy():
         """function used to full deployment an archive"""
-        achive_file = do_pack()
+        archive_file = do_pack()
         if archive_file is None:
             return False
-        deployed_file = do_deploy(achive_file)
+        deployed_file = do_deploy(archive_file)
         return deployed_file
