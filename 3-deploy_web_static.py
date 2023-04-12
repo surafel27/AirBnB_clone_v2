@@ -57,10 +57,11 @@ def do_deploy(archive_path):
     except:
         return False
 
-    def deploy():
-        """function used to full deployment an archive"""
-        archive_file = do_pack()
-        if archive_file is None:
-            return False
-        deployed_file = do_deploy(archive_file)
-        return deployed_file
+def deploy():
+    """function used to full deployment an archive
+    first do_pack() then deploye it the using do_deploy()"""
+    archive_file = do_pack()
+    if archive_file is None:
+        return False
+    deployed_file = do_deploy(archive_file)
+    return deployed_file
