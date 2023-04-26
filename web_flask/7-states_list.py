@@ -1,22 +1,29 @@
 #!/usr/bin/python3
-"""fetching data from the storage engine """
+"""
+fetching data from the storage engine
+"""
 from flask import Flask, render_template
 from models import storage
 from models.state import State
 
 app = Flask(__name__)
+states = storage.all(State)
 
 
 @app.route('/states_list', strict_slashes=False)
 def fetch_data():
-    """fetching data from the storage engine"""
+    """
+    fetching data from the storage engine
     states = storage.all(State)
+    """
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
 def teardown(exc):
-    """ remove the current SQLAlchemy Session"""
+    """
+    remove the current SQLAlchemy Session
+    """
     storage.close()
 
 
