@@ -1,28 +1,27 @@
 #!/usr/bin/python3
-"""
-fetching data from the storage engine
+"""Starts a flask app on 0.0.0.0:5000
+   and  data from the storage engine
+
 """
 from flask import Flask, render_template
 from models import storage
 from models.state import State
 
 app = Flask(__name__)
-states = storage.all(State)
 
 
 @app.route('/states_list', strict_slashes=False)
 def fetch_data():
-    """
+    """Display an HTML page
     fetching data from the storage engine
-    states = storage.all(State)
     """
+    states = storage.all(State)
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
 def teardown(exc):
-    """
-    remove the current SQLAlchemy Session
+    """Remove the current SQLAlchemy Session
     """
     storage.close()
 
